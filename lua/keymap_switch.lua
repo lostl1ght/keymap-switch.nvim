@@ -32,8 +32,7 @@ local M = {}
 
 function M.setup(opts)
   if not opts or not opts.keymap then
-    vim.notify("Setting 'keymap' required", vim.log.levels.ERROR)
-    return
+    error("Setting 'keymap' required")
   end
 
   config.keymap = opts.keymap
