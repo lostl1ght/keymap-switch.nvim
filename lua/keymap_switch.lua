@@ -22,7 +22,9 @@ end
 
 ---Setup input_switch.nvim
 ---@param opts Config
-local function setup(opts)
+local M = {}
+
+function M.setup(opts)
   if not opts or not opts.keymap then
     vim.notify("Setting 'keymap' required", vim.log.levels.ERROR)
     return
@@ -40,7 +42,7 @@ end
 
 ---Status line condition
 ---@return boolean
-local function condition()
+function M.condition()
   return vim.b.keymap_name
     and (
       vim.o.imsearch ~= -1 and vim.fn.mode() == 'c' and vim.o.imsearch == 1
@@ -50,8 +52,8 @@ end
 
 ---Status line provider
 ---@return string
-local function provider()
+function M.provider()
   return config.format(vim.b.keymap_name)
 end
 
-return { setup = setup, condition = condition, provider = provider }
+return M
