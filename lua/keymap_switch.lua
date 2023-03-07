@@ -1,6 +1,9 @@
-local default_config = {
+local config = {
   iminsert = 0,
   imsearch = -1,
+  format = function(keymap_name)
+    return keymap_name
+  end,
 }
 
 local function switch_n()
@@ -20,7 +23,7 @@ local function setup(opts)
     return
   end
 
-  local config = vim.tbl_extend('force', default_config, opts)
+  config = vim.tbl_extend('force', config, opts)
 
   vim.o.keymap = config.keymap
   vim.o.iminsert = config.iminsert
@@ -40,7 +43,7 @@ end
 ---Statusline provider
 ---@return string
 local function provider()
-  return string.upper(vim.b.keymap_name)
+  return config.format(vim.b.keymap_name)
 end
 
 return { setup = setup, condition = condition, provider = provider }
