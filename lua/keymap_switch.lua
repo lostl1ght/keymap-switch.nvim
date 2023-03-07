@@ -20,8 +20,10 @@ local function switch_ic()
   vim.api.nvim_feedkeys(key, 'n', false)
 end
 
----Setup input_switch.nvim
----@param opts Config
+---@class KeymapSwitch
+---@field setup fun(opts:Config) Setup keymap-switch.nvim
+---@field condition fun():boolean Status line condition
+---@field provider fun():string Status line provider
 local M = {}
 
 function M.setup(opts)
@@ -40,8 +42,6 @@ function M.setup(opts)
   vim.keymap.set('n', '<plug>(keymap-switch)', switch_n)
 end
 
----Status line condition
----@return boolean
 function M.condition()
   return vim.b.keymap_name
     and (
@@ -50,8 +50,6 @@ function M.condition()
     )
 end
 
----Status line provider
----@return string
 function M.provider()
   return config.format(vim.b.keymap_name)
 end
