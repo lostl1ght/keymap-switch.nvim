@@ -1,6 +1,6 @@
 # keymap-switch.nvim
 
-A plugin for Neovim for switching `:h keymap` and displaying it in a status line.
+A plugin for Neovim for switching keyboard layout and displaying it in a status line.
 
 ### Table of contents
 
@@ -26,6 +26,7 @@ With [lazy.nvim](https://github.com/folke/lazy.nvim):
       keymap = -- *required*, see :h keymap
       -- other configuration
     })
+    -- key mappings setup
   end
 }
 ```
@@ -40,6 +41,7 @@ use({
       keymap = -- *required*, see :h keymap
       -- other configuration
     })
+    -- key mappings setup
   end,
 })
 ```
@@ -51,8 +53,6 @@ Default `setup` values:
 ```lua
 {
   keymap = nil, -- *required*, see :h keymap
-  iminsert = 0, -- :h iminsert
-  imsearch = -1, -- :h imsearch
   format = function(keymap_name) -- used in provider()
     return keymap_name           -- accepts vim.b.keymap_name
   end,
@@ -68,11 +68,15 @@ vim.keymap.set({'i', 'n', 'c'}, '<c-\\>', '<plug>(keymap-switch)')
 
 ## Status line
 
-`keymap-switch.nvim` exposes 2 functions for a status line plugin:
+The plugin exposes 2 functions for a status line plugin:
+
+`condition()` allows hiding the component when layout is not EN:
 
 ```lua
 require('keymap_switch').condition()
 ```
+
+`provider()` allows displaying layout, returns `en` when `:h iminsert` is 0:
 
 ```lua
 require('keymap_switch').provider()
