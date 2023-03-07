@@ -1,13 +1,14 @@
-# langmap-switch.nvim
+# keymap-switch.nvim
 
-A plugin for Neovim to switch `:h keymap` and display it in a status line.
+A plugin for Neovim for switching `:h keymap` and displaying it in a status line.
 
 ### Table of contents
 
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Configuration](#configuration)
-- [Statusline](#statusline)
+- [Status line](#status-line)
+- [Hacks](#hacks)
 
 ## Requirements
 
@@ -19,9 +20,9 @@ With [lazy.nvim](https://github.com/folke/lazy.nvim):
 
 ```lua
 {
-  'lostl1ght/langmap-switch.nvim',
+  'lostl1ght/keymap-switch.nvim',
   config = function()
-    require('langmap_switch').setup({
+    require('keymap_switch').setup({
       keymap = -- *required*, see :h keymap
       -- other configuration
     })
@@ -33,9 +34,9 @@ With [packer.nvim](https://github.com/wbthomason/packer.nvim):
 
 ```lua
 use({
-  'lostl1ght/langmap-switch.nvim',
+  'lostl1ght/keymap-switch.nvim',
   config = function()
-    require('langmap_switch').setup({
+    require('keymap_switch').setup({
       keymap = -- *required*, see :h keymap
       -- other configuration
     })
@@ -52,23 +53,26 @@ Default `setup` values:
   keymap = nil, -- *required*, see :h keymap
   iminsert = 0, -- :h iminsert
   imsearch = -1, -- :h imsearch
-  -- key mappings, set to `nil` to disable
-  map_insert = '<c-\\>', -- insert mode
-  map_normal = '<c-\\>', -- normal mode
-  map_command = '<c-\\>', -- command-line mode
 }
 ```
+### Key mappings
 
-## Statusline
-
-`langmap-switch` exposes 2 functions for a status line plugin:
+Set key mappings:
 
 ```lua
-require('langmap_switch').condition()
+vim.keymap.set({'i', 'n', 'c'}, '<c-\\>', '<plug>(keymap-switch)')
+```
+
+## Status line
+
+`keymap-switch.nvim` exposes 2 functions for a status line plugin:
+
+```lua
+require('keymap_switch').condition()
 ```
 
 ```lua
-require('langmap_switch').provider()
+require('keymap_switch').provider()
 ```
 
 These functions can be used in a status line to display whether keymap is active.
@@ -80,10 +84,17 @@ require('lualine').setup({
   sections = {
     lualine_z = {
       {
-        require('langmap_switch').provider,
-        cond = require('langmap_switch').condition,
+        require('keymap_switch').provider,
+        cond = require('keymap_switch').condition,
       }
     }
   }
 })
 ```
+
+## Hacks
+
+In insert/command modes the plugin feeds `:h i_CTRL-^`/`:h c_CTRL-^`
+because changing `:h iminsert` directly (like in normal mode)
+is not reflected in the status line components until exiting
+insert/command modes.
