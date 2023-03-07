@@ -1,8 +1,8 @@
----@class Config
+---@class DefaultConfig
 ---@field keymap string
----@field iminsert? integer
----@field imsearch? integer
----@field format? fun(keymap_name:string):string
+---@field iminsert integer
+---@field imsearch integer
+---@field format fun(keymap_name:string):string
 local config = {
   iminsert = 0,
   imsearch = -1,
@@ -20,6 +20,10 @@ local function switch_ic()
   vim.api.nvim_feedkeys(key, 'n', false)
 end
 
+---@class Config
+---@field keymap string
+---@field format fun(keymap_name:string):string
+
 ---@class KeymapSwitch
 ---@field setup fun(opts:Config) Setup keymap-switch.nvim
 ---@field condition fun():boolean Status line condition
@@ -32,7 +36,8 @@ function M.setup(opts)
     return
   end
 
-  config = vim.tbl_extend('force', config, opts)
+  config.keymap = opts.keymap
+  config.format = opts.format or config.format
 
   vim.o.keymap = config.keymap
   vim.o.iminsert = config.iminsert
