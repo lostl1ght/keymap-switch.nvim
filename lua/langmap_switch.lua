@@ -1,9 +1,6 @@
 local default_config = {
   iminsert = 0,
   imsearch = -1,
-  map_insert = '<c-\\>',
-  map_normal = '<c-\\>',
-  map_command = '<c-\\>',
 }
 
 local function switch_n()
@@ -29,15 +26,8 @@ local function setup(opts)
   vim.o.iminsert = config.iminsert
   vim.o.imsearch = config.imsearch
 
-  if config.map_insert then
-    vim.keymap.set('i', config.map_insert, switch_ic)
-  end
-  if config.map_command then
-    vim.keymap.set('c', config.map_command, switch_ic)
-  end
-  if config.map_normal then
-    vim.keymap.set('n', config.map_normal, switch_n)
-  end
+  vim.keymap.set({'i', 'c'}, '<plug>(keymap-switch)', switch_ic)
+  vim.keymap.set('n', '<plug>(keymap-switch)', switch_n)
 end
 
 ---Statusline condition
