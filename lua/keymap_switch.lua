@@ -1,3 +1,8 @@
+---@class Config
+---@field keymap string
+---@field iminsert? integer
+---@field imsearch? integer
+---@field format? fun(keymap_name:string):string
 local config = {
   iminsert = 0,
   imsearch = -1,
@@ -16,7 +21,7 @@ local function switch_ic()
 end
 
 ---Setup input_switch.nvim
----@param opts table
+---@param opts Config
 local function setup(opts)
   if not opts or not opts.keymap then
     vim.notify("Setting 'keymap' required", vim.log.levels.ERROR)
@@ -29,18 +34,21 @@ local function setup(opts)
   vim.o.iminsert = config.iminsert
   vim.o.imsearch = config.imsearch
 
-  vim.keymap.set({'i', 'c'}, '<plug>(keymap-switch)', switch_ic)
+  vim.keymap.set({ 'i', 'c' }, '<plug>(keymap-switch)', switch_ic)
   vim.keymap.set('n', '<plug>(keymap-switch)', switch_n)
 end
 
----Statusline condition
+---Status line condition
 ---@return boolean
 local function condition()
   return vim.b.keymap_name
-    and (vim.o.imsearch ~= -1 and vim.fn.mode() == 'c' and vim.o.imsearch == 1 or vim.o.iminsert == 1)
+    and (
+      vim.o.imsearch ~= -1 and vim.fn.mode() == 'c' and vim.o.imsearch == 1
+      or vim.o.iminsert == 1
+    )
 end
 
----Statusline provider
+---Status line provider
 ---@return string
 local function provider()
   return config.format(vim.b.keymap_name)
