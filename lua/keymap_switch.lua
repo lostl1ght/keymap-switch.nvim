@@ -12,7 +12,7 @@ local config = {
 }
 
 local function switch_n()
-  vim.o.iminsert = math.floor((2 - vim.o.iminsert) / 2)
+  vim.o.iminsert = bit.bxor(vim.o.iminsert, 1)
 end
 
 local key = vim.api.nvim_replace_termcodes('<c-^>', true, true, true)
