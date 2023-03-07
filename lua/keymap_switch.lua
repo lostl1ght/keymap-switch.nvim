@@ -55,7 +55,7 @@ function M.condition()
 end
 
 function M.provider()
-  return config.format(vim.b.keymap_name)
+  return config.format(M.condition() and vim.b.keymap_name or 'en')
 end
 
 return M
