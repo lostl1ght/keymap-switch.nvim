@@ -53,6 +53,9 @@ Default `setup` values:
   keymap = nil, -- *required*, see :h keymap
   iminsert = 0, -- :h iminsert
   imsearch = -1, -- :h imsearch
+  format = function(keymap_name) -- used in provider()
+    return keymap_name           -- accepts vim.b.keymap_name
+  end,
 }
 ```
 ### Key mappings
