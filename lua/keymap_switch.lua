@@ -31,9 +31,16 @@ end
 local M = {}
 
 function M.setup(opts)
-  if not opts or not opts.keymap then
-    error("Setting 'keymap' required")
-  end
+  vim.validate({
+    keymap = { opts.keymap, 'string' },
+    format = {
+      opts.format,
+      function(v)
+        return v == nil or type(v) == 'function'
+      end,
+      "'format' must be a function with 1 string argument",
+    },
+  })
 
   config.keymap = opts.keymap
   config.format = opts.format or config.format
