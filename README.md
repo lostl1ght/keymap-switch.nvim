@@ -21,12 +21,14 @@ With [lazy.nvim](https://github.com/folke/lazy.nvim):
 ```lua
 {
   'lostl1ght/keymap-switch.nvim',
+  keys = {
+    { '<c-\\>', '<plug>(keymap-switch)', mode = { 'i', 'c', 'n' } },
+  },
   config = function()
     require('keymap_switch').setup({
       keymap = -- *required*, see :h keymap
       -- other configuration
     })
-    -- key mappings setup
   end
 }
 ```
