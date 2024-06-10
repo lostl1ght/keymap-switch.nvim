@@ -31,21 +31,6 @@ With [lazy.nvim](https://github.com/folke/lazy.nvim):
 }
 ```
 
-With [packer.nvim](https://github.com/wbthomason/packer.nvim):
-
-```lua
-use({
-  'lostl1ght/keymap-switch.nvim',
-  config = function()
-    require('keymap_switch').setup({
-      keymap = -- *required*, see :h keymap
-      -- other configuration
-    })
-    -- key mappings setup
-  end,
-})
-```
-
 ## Configuration
 
 Default `setup` values:
