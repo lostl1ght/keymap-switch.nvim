@@ -6,19 +6,13 @@
 local config = {
   iminsert = 0,
   imsearch = -1,
-  format = function(keymap_name)
-    return keymap_name
-  end,
+  format = function(keymap_name) return keymap_name end,
 }
 
-local function switch_n()
-  vim.o.iminsert = bit.bxor(vim.o.iminsert, 1)
-end
+local function switch_n() vim.o.iminsert = bit.bxor(vim.o.iminsert, 1) end
 
 local key = vim.api.nvim_replace_termcodes('<c-^>', true, true, true)
-local function switch_ic()
-  vim.api.nvim_feedkeys(key, 'n', false)
-end
+local function switch_ic() vim.api.nvim_feedkeys(key, 'n', false) end
 
 ---@class Config
 ---@field keymap string
@@ -35,9 +29,7 @@ function M.setup(opts)
     keymap = { opts.keymap, 'string' },
     format = {
       opts.format,
-      function(v)
-        return v == nil or type(v) == 'function'
-      end,
+      function(v) return v == nil or type(v) == 'function' end,
       "'format' must be a function with 1 string argument",
     },
   })
@@ -61,8 +53,6 @@ function M.condition()
     )
 end
 
-function M.provider()
-  return config.format(M.condition() and vim.b.keymap_name or 'en')
-end
+function M.provider() return config.format(M.condition() and vim.b.keymap_name or 'en') end
 
 return M
