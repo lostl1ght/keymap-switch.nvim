@@ -9,7 +9,7 @@ local config = {
   format = function(keymap_name) return keymap_name end,
 }
 
-local function switch_n() vim.o.iminsert = bit.bxor(vim.o.iminsert, 1) end
+local function switch_nx() vim.o.iminsert = bit.bxor(vim.o.iminsert, 1) end
 
 local key = vim.api.nvim_replace_termcodes('<c-^>', true, true, true)
 local function switch_ic() vim.api.nvim_feedkeys(key, 'n', false) end
@@ -42,7 +42,7 @@ function M.setup(opts)
   vim.o.imsearch = config.imsearch
 
   vim.keymap.set({ 'i', 'c' }, '<plug>(keymap-switch)', switch_ic)
-  vim.keymap.set('n', '<plug>(keymap-switch)', switch_n)
+  vim.keymap.set({ 'n', 'x' }, '<plug>(keymap-switch)', switch_nx)
 end
 
 function M.condition()
