@@ -3,16 +3,16 @@
 ---@field iminsert integer
 ---@field imsearch integer
 ---@field format fun(keymap_name:string):string
-local config = {
+local C = {
   iminsert = 0,
   imsearch = -1,
   format = function(keymap_name) return keymap_name end,
 }
 
-local function switch_nsx() vim.o.iminsert = bit.bxor(vim.o.iminsert, 1) end
+local switch_nsx = function() vim.o.iminsert = bit.bxor(vim.o.iminsert, 1) end
 
 local key = vim.api.nvim_replace_termcodes('<c-^>', true, true, true)
-local function switch_ic() vim.api.nvim_feedkeys(key, 'n', false) end
+local switch_ic = function() vim.api.nvim_feedkeys(key, 'n', false) end
 
 ---@class Config
 ---@field keymap string
@@ -24,7 +24,7 @@ local function switch_ic() vim.api.nvim_feedkeys(key, 'n', false) end
 ---@field provider fun():string Status line provider
 local M = {}
 
-function M.setup(opts)
+M.setup = function(opts)
   vim.validate({
     keymap = { opts.keymap, 'string' },
     format = {
@@ -34,18 +34,18 @@ function M.setup(opts)
     },
   })
 
-  config.keymap = opts.keymap
-  config.format = opts.format or config.format
+  C.keymap = opts.keymap
+  C.format = opts.format or C.format
 
-  vim.o.keymap = config.keymap
-  vim.o.iminsert = config.iminsert
-  vim.o.imsearch = config.imsearch
+  vim.o.keymap = C.keymap
+  vim.o.iminsert = C.iminsert
+  vim.o.imsearch = C.imsearch
 
   vim.keymap.set({ 'i', 'c' }, '<plug>(keymap-switch)', switch_ic)
   vim.keymap.set({ 'n', 's', 'x' }, '<plug>(keymap-switch)', switch_nsx)
 end
 
-function M.condition()
+M.condition = function()
   return vim.b.keymap_name
     and (
       vim.o.imsearch ~= -1 and vim.fn.mode() == 'c' and vim.o.imsearch == 1
@@ -53,6 +53,6 @@ function M.condition()
     )
 end
 
-function M.provider() return config.format(M.condition() and vim.b.keymap_name or 'en') end
+M.provider = function() return C.format(M.condition() and vim.b.keymap_name or 'en') end
 
 return M
